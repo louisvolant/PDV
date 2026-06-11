@@ -186,8 +186,8 @@ export default function CalculatorForm({
     setOpenSection(openSection === section ? null : section);
   };
 
-  const inputClass = "w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-150 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition-all";
-  const smallInputClass = "w-full px-3 py-1.5 text-sm rounded-lg border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-150 focus:border-indigo-500 focus:outline-none transition-all";
+  const inputClass = "w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition-all";
+  const smallInputClass = "w-full px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:border-indigo-500 focus:outline-none transition-all";
 
   return (
     <div className="flex flex-col gap-4">
@@ -211,7 +211,7 @@ export default function CalculatorForm({
         </button>
 
         {openSection === 'base' && (
-          <div className="p-5 border-t border-slate-150 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
+          <div className="p-5 border-t border-slate-200 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
@@ -346,7 +346,7 @@ export default function CalculatorForm({
         </button>
 
         {openSection === 'extra' && (
-          <div className="p-5 border-t border-slate-150 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
+          <div className="p-5 border-t border-slate-200 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
             
             {/* Rules */}
             <div className="p-4 rounded-xl bg-indigo-50/30 dark:bg-indigo-950/10 border border-indigo-100/60 dark:border-indigo-900/30 text-xs text-slate-500 dark:text-slate-400 flex flex-col gap-1.5">
@@ -449,7 +449,7 @@ export default function CalculatorForm({
                     type="number"
                     value={trainingBonus}
                     onChange={(e) => setTrainingBonus(Number(e.target.value))}
-                    className="mt-3 w-full px-3 py-1.5 text-sm rounded-lg border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="mt-3 w-full px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 )}
               </div>
@@ -472,7 +472,7 @@ export default function CalculatorForm({
                     type="number"
                     value={businessCreationBonus}
                     onChange={(e) => setBusinessCreationBonus(Number(e.target.value))}
-                    className="mt-3 w-full px-3 py-1.5 text-sm rounded-lg border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="mt-3 w-full px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 )}
               </div>
@@ -500,7 +500,7 @@ export default function CalculatorForm({
         </button>
 
         {openSection === 'reclass' && (
-          <div className="p-5 border-t border-slate-150 dark:border-slate-800/60 flex flex-col gap-6 animate-slide-up">
+          <div className="p-5 border-t border-slate-200 dark:border-slate-800/60 flex flex-col gap-6 animate-slide-up">
             
             {/* Pré-avis */}
             <div className="flex flex-col gap-3">
@@ -573,7 +573,7 @@ export default function CalculatorForm({
               </div>
 
               {/* Slider UI */}
-              <div className="p-4 rounded-xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/20">
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/20">
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                   {t('conducted_leave_title')} <span className="text-pink-500 text-sm font-extrabold">{t('conducted_leave_val', reclassLeaveUsed)}</span>
                 </label>
@@ -584,9 +584,9 @@ export default function CalculatorForm({
                   step="0.5"
                   value={reclassLeaveUsed}
                   onChange={(e) => setReclassLeaveUsed(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-250 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500 focus:outline-none"
+                  className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500 focus:outline-none"
                 />
-                <div className="flex justify-between text-[10px] text-slate-450 dark:text-slate-500 mt-2 font-mono">
+                <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-500 mt-2 font-mono">
                   <span>0 mos</span>
                   <span>Max: {reclassLeaveMonths} mos</span>
                 </div>
@@ -598,7 +598,7 @@ export default function CalculatorForm({
             </div>
 
             {/* Social Contributions Rates */}
-            <div className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-150 dark:border-slate-800 flex flex-col gap-3">
+            <div className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 flex flex-col gap-3">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                 {t('social_charges_title')}
                 <span title={t('social_charges_desc')} className="cursor-help flex items-center">
@@ -691,7 +691,7 @@ export default function CalculatorForm({
         </button>
 
         {openSection === 'fractions' && (
-          <div className="p-5 border-t border-slate-150 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
+          <div className="p-5 border-t border-slate-200 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
               {/* ILL */}

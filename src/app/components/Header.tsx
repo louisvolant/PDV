@@ -33,7 +33,7 @@ export default function Header() {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as 'fr' | 'en')}
-            className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm outline-none transition-all hover:bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-850"
+            className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm outline-none transition-all hover:bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <option value="fr">Français 🇫🇷</option>
             <option value="en">English 🇬🇧</option>
@@ -43,12 +43,12 @@ export default function Header() {
           <button
             onClick={toggleDarkMode}
             aria-label="Toggle Theme"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-850 dark:hover:text-white"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             {darkMode ? (
               <Sun className="h-4 w-4 text-amber-500 transition-all hover:rotate-45" />
             ) : (
-              <Moon className="h-4 w-4 text-indigo-650 transition-all" />
+              <Moon className="h-4 w-4 text-indigo-600 transition-all" />
             )}
           </button>
         </div>

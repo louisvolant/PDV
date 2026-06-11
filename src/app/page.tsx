@@ -371,7 +371,7 @@ export default function Home() {
       </div>
 
       {/* Warning Banner */}
-      <div className="flex gap-3 p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/20 text-amber-800 dark:text-amber-400 text-xs font-semibold leading-relaxed shadow-sm">
+      <div className="flex gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200 dark:border-amber-500/20 text-amber-900 dark:text-amber-400 text-xs font-semibold leading-relaxed shadow-sm">
         <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-500" />
         <div>
           <span className="font-extrabold">{t('indicative_note')}</span> {t('indicative_note_text')}

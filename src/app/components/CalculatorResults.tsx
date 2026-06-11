@@ -31,17 +31,17 @@ export default function CalculatorResults({
     }`;
 
   const detailItemClass = "flex justify-between items-baseline text-sm";
-  const labelClass = "font-semibold text-slate-700 dark:text-slate-350";
+  const labelClass = "font-semibold text-slate-700 dark:text-slate-300";
   const valClass = "font-bold text-slate-950 dark:text-slate-50 font-mono";
-  const descClass = "text-[11px] text-slate-450 dark:text-slate-450 leading-relaxed pl-3.5 border-l border-slate-200 dark:border-slate-800 mt-1";
+  const descClass = "text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed pl-3.5 border-l border-slate-200 dark:border-slate-800 mt-1";
 
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-900/40 backdrop-blur shadow-xl overflow-hidden flex flex-col animate-slide-up">
       
       {/* Widget Header */}
-      <div className="bg-slate-50 dark:bg-slate-900/60 px-5 py-4 border-b border-slate-200/80 dark:border-slate-850/60 flex items-center justify-between">
+      <div className="bg-slate-50 dark:bg-slate-900/60 px-5 py-4 border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between">
         <span className="font-bold text-sm text-slate-700 dark:text-slate-300">{t('estimated_amounts')}</span>
-        <span className="text-[10px] px-2 py-0.5 rounded-full font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-150/40 dark:border-indigo-900/40">
+        <span className="text-[10px] px-2 py-0.5 rounded-full font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/40 dark:border-indigo-900/40">
           PROT_V1.1
         </span>
       </div>
@@ -67,7 +67,7 @@ export default function CalculatorResults({
         </div>
 
         {/* Net Amount */}
-        <div className="bg-white dark:bg-slate-900/20 p-5 flex flex-col border-t border-slate-100 dark:border-slate-850">
+        <div className="bg-white dark:bg-slate-900/20 p-5 flex flex-col border-t border-slate-100 dark:border-slate-800">
           <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
             {t('hero_net')}
           </span>
@@ -75,14 +75,14 @@ export default function CalculatorResults({
             <span className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
               {formatCurrency(results.totalIndemnitesNet)}
             </span>
-            <span className="text-[10px] font-bold text-slate-450">
+            <span className="text-[10px] font-bold text-slate-500">
               {t('csg_deducted', formatCurrency(Math.max(results.legalExtraAdjusted - results.legal.amount, 0) * 0.097))}
             </span>
           </div>
         </div>
 
         {/* Net Net (Pocket Net) */}
-        <div className="bg-white dark:bg-slate-900/20 p-5 flex flex-col border-t border-slate-100 dark:border-slate-850">
+        <div className="bg-white dark:bg-slate-900/20 p-5 flex flex-col border-t border-slate-100 dark:border-slate-800">
           <span className="text-xs font-bold text-emerald-500/95 dark:text-emerald-400/95 uppercase tracking-wider">
             {t('hero_net_net')}
           </span>
@@ -90,7 +90,7 @@ export default function CalculatorResults({
             <span className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
               {formatCurrency(results.totalIndemnitesNetNet)}
             </span>
-            <span className="text-[10px] font-bold text-slate-450">
+            <span className="text-[10px] font-bold text-slate-500">
               {t('exempt_tax')}
             </span>
           </div>
@@ -166,7 +166,7 @@ export default function CalculatorResults({
 
               <div className="mt-4 pt-3.5 border-t border-dashed border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-semibold text-slate-500 dark:text-slate-450 text-xs">{t('global_total_gross')}</span>
+                  <span className="font-semibold text-slate-500 dark:text-slate-500 text-xs">{t('global_total_gross')}</span>
                   <span className="font-bold text-slate-800 dark:text-slate-200 font-mono text-xs">{formatCurrency(results.totalBrut)}</span>
                 </div>
                 <div className="flex justify-between items-baseline">
@@ -191,8 +191,8 @@ export default function CalculatorResults({
             </h3>
 
             {/* Pré-avis Section */}
-            <div className="p-4 rounded-xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/10 flex flex-col gap-2">
-              <div className="flex justify-between items-center border-b border-slate-150 dark:border-slate-800/60 pb-1.5 mb-1.5">
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/10 flex flex-col gap-2">
+              <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800/60 pb-1.5 mb-1.5">
                 <span className="font-extrabold text-slate-800 dark:text-slate-200">{t('preavis')}</span>
                 <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-mono">
                   {t('duration')}: {results.reclass.preavisMonths} mois
@@ -210,7 +210,7 @@ export default function CalculatorResults({
                 <span>{t('net_net')} :</span>
                 <span className="font-bold text-slate-900 dark:text-slate-100 font-mono">{formatCurrency(results.preavisPeriodNetNet)}</span>
               </div>
-              <div className="flex justify-between text-[11px] pt-1 border-t border-slate-150/40 dark:border-slate-800/40 mt-1">
+              <div className="flex justify-between text-[11px] pt-1 border-t border-slate-200/40 dark:border-slate-800/40 mt-1">
                 <span>{t('monthly')} :</span>
                 <span className="font-semibold text-slate-500 font-mono">
                   {results.reclass.preavisMonths > 0
@@ -226,8 +226,8 @@ export default function CalculatorResults({
             </div>
 
             {/* Congé de reclassement Section */}
-            <div className="p-4 rounded-xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/10 flex flex-col gap-4">
-              <div className="flex flex-col border-b border-slate-150 dark:border-slate-800/60 pb-1.5 mb-0.5">
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/10 flex flex-col gap-4">
+              <div className="flex flex-col border-b border-slate-200 dark:border-slate-800/60 pb-1.5 mb-0.5">
                 <div className="flex justify-between items-center">
                   <span className="font-extrabold text-slate-800 dark:text-slate-200">{t('leave_title')}</span>
                   <span className="text-xs font-bold px-2 py-0.5 rounded bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 font-mono">
@@ -241,7 +241,7 @@ export default function CalculatorResults({
 
               {/* Sub-block: Effectués */}
               <div className="flex flex-col gap-1.5 pl-3 border-l-2 border-pink-500">
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-350">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   {t('conducted_desc', results.reclass.leaveMonths - results.reclass.leaveRemaining)}
                 </span>
                 <div className="flex justify-between text-xs">
@@ -256,7 +256,7 @@ export default function CalculatorResults({
                   <span>{t('net_net')} :</span>
                   <span className="font-bold text-slate-900 dark:text-slate-100 font-mono">{formatCurrency(results.leaveEffectuesNetNet)}</span>
                 </div>
-                <div className="flex justify-between text-[11px] pt-1 border-t border-slate-150/40 dark:border-slate-800/40 mt-1">
+                <div className="flex justify-between text-[11px] pt-1 border-t border-slate-200/40 dark:border-slate-800/40 mt-1">
                   <span>{t('monthly')} :</span>
                   <span className="font-semibold text-slate-500 font-mono">
                     {results.reclass.leaveMonths - results.reclass.leaveRemaining > 0
@@ -273,7 +273,7 @@ export default function CalculatorResults({
 
               {/* Sub-block: Non Effectués */}
               <div className="flex flex-col gap-1.5 pl-3 border-l-2 border-slate-300 dark:border-slate-700">
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-350">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   {t('unconducted_desc', results.reclass.leaveRemaining)}
                 </span>
                 <div className="flex justify-between text-xs">
@@ -288,7 +288,7 @@ export default function CalculatorResults({
                   <span>{t('net_net')} :</span>
                   <span className="font-bold text-slate-900 dark:text-slate-100 font-mono">{formatCurrency(results.leaveNonEffectuesNetNet)}</span>
                 </div>
-                <div className="flex justify-between text-[11px] pt-1 border-t border-slate-150/40 dark:border-slate-800/40 mt-1">
+                <div className="flex justify-between text-[11px] pt-1 border-t border-slate-200/40 dark:border-slate-800/40 mt-1">
                   <span>{t('monthly')} :</span>
                   <span className="font-semibold text-slate-500 font-mono">
                     {results.reclass.leaveRemaining > 0
