@@ -19,6 +19,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Calculateur PDV – Indemnités de Départ",
   description: "Simulateur complet pour calculer les indemnités de Plan de Départ Volontaire (PDV) : indemnité légale, supra-légale, congé de reclassement et primes.",
+  icons: {
+    icon: '/icon-calc-192.png',
+    apple: '/icon-calc-192.png',
+  },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'SuperApp',
+  },
 };
 
 export default function RootLayout({
