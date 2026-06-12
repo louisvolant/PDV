@@ -90,7 +90,7 @@ export function getMultiplierBySeniority(totalYears: number): number {
     return 1.0;
   } else if (totalYears <= 10) {
     return 1.0;
-  } else if (totalYears <= 15) {
+  } else if (totalYears < 15) {
     return 1.2;
   } else {
     return 1.5;
@@ -102,7 +102,7 @@ export function getFloorBySeniority(totalYears: number): number {
     return 70000;
   } else if (totalYears <= 10) {
     return 90000;
-  } else if (totalYears <= 15) {
+  } else if (totalYears < 15) {
     return 110000;
   } else {
     return 130000;
@@ -122,7 +122,8 @@ export function computeLegalIndemnity(
   illFracFirst: number,
   illFracAfter: number,
   iclFracFirst: number,
-  iclFracAfter: number
+  iclFracAfter: number,
+  locale: 'fr' | 'en' = 'fr'
 ): LegalIndemnity {
   const totalYears = years + months / 12;
   const cappedFirst = Math.min(totalYears, 10);
@@ -143,11 +144,17 @@ export function computeLegalIndemnity(
 
   let detail = "";
   if (Math.abs(illAmount - iclAmount) < 0.01) {
-    detail = `${monthsEq.toFixed(2)} mois de salaire (ILL = ICL)`;
+    detail = locale === 'en'
+      ? `${monthsEq.toFixed(2)} months salary (ILL = ICL)`
+      : `${monthsEq.toFixed(2)} mois de salaire (ILL = ICL)`;
   } else if (isILL) {
-    detail = `${monthsEq.toFixed(2)} mois de salaire - ILL retenue (${illAmount.toFixed(2)} €) > ICL (${iclAmount.toFixed(2)} €)`;
+    detail = locale === 'en'
+      ? `${monthsEq.toFixed(2)} months salary - ILL retained (${illAmount.toFixed(2)} €) > ICL (${iclAmount.toFixed(2)} €)`
+      : `${monthsEq.toFixed(2)} mois de salaire - ILL retenue (${illAmount.toFixed(2)} €) > ICL (${iclAmount.toFixed(2)} €)`;
   } else {
-    detail = `${monthsEq.toFixed(2)} mois de salaire - ICL retenue (${iclAmount.toFixed(2)} €) > ILL (${illAmount.toFixed(2)} €)`;
+    detail = locale === 'en'
+      ? `${monthsEq.toFixed(2)} months salary - ICL retained (${iclAmount.toFixed(2)} €) > ILL (${illAmount.toFixed(2)} €)`
+      : `${monthsEq.toFixed(2)} mois de salaire - ICL retenue (${iclAmount.toFixed(2)} €) > ILL (${illAmount.toFixed(2)} €)`;
   }
 
   return {
@@ -165,36 +172,45 @@ export function computeExtraLegal(
   refMonthly: number,
   totalYears: number,
   minMonths: number,
-  customMultiplier: number | null = null
+  customMultiplier: number | null = null,
+  locale: 'fr' | 'en' = 'fr'
 ): ExtraLegalIndemnity {
   let monthsEq = 0;
   const detailParts: string[] = [];
 
   if (customMultiplier !== null && customMultiplier > 0) {
     monthsEq = totalYears * customMultiplier;
-    detailParts.push(`${totalYears.toFixed(2)} ans × ${customMultiplier.toFixed(2)}`);
+    detailParts.push(locale === 'en'
+      ? `${totalYears.toFixed(2)} yrs × ${customMultiplier.toFixed(2)}`
+      : `${totalYears.toFixed(2)} ans × ${customMultiplier.toFixed(2)}`);
   } else {
     const multiplier = getMultiplierBySeniority(totalYears);
     let trancheLabel = "1-5 ans";
     if (totalYears <= 5) {
-      trancheLabel = "1-5 ans";
+      trancheLabel = locale === 'en' ? "1-5 yrs" : "1-5 ans";
     } else if (totalYears <= 10) {
-      trancheLabel = "5-10 ans";
+      trancheLabel = locale === 'en' ? "5-10 yrs" : "5-10 ans";
     } else if (totalYears <= 15) {
-      trancheLabel = "10-15 ans";
+      trancheLabel = locale === 'en' ? "10-15 yrs" : "10-15 ans";
     } else {
-      trancheLabel = "+15 ans";
+      trancheLabel = locale === 'en' ? "+15 yrs" : "+15 ans";
     }
     monthsEq = totalYears * multiplier;
-    detailParts.push(`${totalYears.toFixed(2)} ans × ${multiplier.toFixed(1)} (tranche ${trancheLabel})`);
+    detailParts.push(locale === 'en'
+      ? `${totalYears.toFixed(2)} yrs × ${multiplier.toFixed(1)} (bracket ${trancheLabel})`
+      : `${totalYears.toFixed(2)} ans × ${multiplier.toFixed(1)} (tranche ${trancheLabel})`);
   }
 
   monthsEq = Math.max(monthsEq, minMonths);
   const amount = refMonthly * monthsEq;
 
   const detailText = minMonths > 0
-    ? `${monthsEq.toFixed(2)} mois de salaire de référence (${detailParts.join(" + ")}, plancher ${minMonths} mois)`
-    : `${monthsEq.toFixed(2)} mois de salaire de référence (${detailParts.join(" + ")})`;
+    ? (locale === 'en'
+      ? `${monthsEq.toFixed(2)} months reference salary (${detailParts.join(" + ")}, floor ${minMonths} months)`
+      : `${monthsEq.toFixed(2)} mois de salaire de référence (${detailParts.join(" + ")}, plancher ${minMonths} mois)`)
+    : (locale === 'en'
+      ? `${monthsEq.toFixed(2)} months reference salary (${detailParts.join(" + ")})`
+      : `${monthsEq.toFixed(2)} mois de salaire de référence (${detailParts.join(" + ")})`);
 
   return {
     amount,
@@ -218,7 +234,8 @@ export function computeReclassification(
   mutuelleRate: number,
   retraiteTaRate: number,
   retraiteTbRate: number,
-  cetRate: number
+  cetRate: number,
+  locale: 'fr' | 'en' = 'fr'
 ): ReclassificationResult {
   const preavisRemaining = Math.max(preavisMonths - preavisUsed, 0);
   const preavisMonthlyAllowance = preavisBaseMonthly * (preavisRate / 100);
@@ -248,13 +265,21 @@ export function computeReclassification(
 
   let detail = "";
   if (preavisRemaining > 0 && leaveRemaining > 0) {
-    detail = `${preavisRemaining.toFixed(2)} mois pré-avis (${preavisRate.toFixed(0)}%) + ${leaveRemaining.toFixed(2)} mois congé (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% payé car congé réduit`;
+    detail = locale === 'en'
+      ? `${preavisRemaining.toFixed(2)} months notice (${preavisRate.toFixed(0)}%) + ${leaveRemaining.toFixed(2)} months leave (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% paid (reduced leave)`
+      : `${preavisRemaining.toFixed(2)} mois pré-avis (${preavisRate.toFixed(0)}%) + ${leaveRemaining.toFixed(2)} mois congé (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% payé car congé réduit`;
   } else if (preavisRemaining > 0) {
-    detail = `${preavisRemaining.toFixed(2)} mois pré-avis non consommés (${preavisRate.toFixed(0)}%)`;
+    detail = locale === 'en'
+      ? `${preavisRemaining.toFixed(2)} months notice unconsumed (${preavisRate.toFixed(0)}%)`
+      : `${preavisRemaining.toFixed(2)} mois pré-avis non consommés (${preavisRate.toFixed(0)}%)`;
   } else if (leaveRemaining > 0) {
-    detail = `${leaveRemaining.toFixed(2)} mois congé non consommés (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% payé car congé réduit`;
+    detail = locale === 'en'
+      ? `${leaveRemaining.toFixed(2)} months leave unconsumed (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% paid (reduced leave)`
+      : `${leaveRemaining.toFixed(2)} mois congé non consommés (${leaveRate.toFixed(0)}%) → ${reducedRate.toFixed(0)}% payé car congé réduit`;
   } else {
-    detail = "Aucun mois restant (tout le congé a été consommé)";
+    detail = locale === 'en'
+      ? "No months remaining (all leave consumed)"
+      : "Aucun mois restant (tout le congé a été consommé)";
   }
 
   return {
@@ -315,6 +340,7 @@ export function runCalculation(params: {
   baseMonthlyInput: number;
   legalRefMonthlyInput: number;
   extraRefMonthlyInput: number;
+  locale: 'fr' | 'en';
 }): CalculationResult {
   const {
     annualGross,
@@ -348,6 +374,7 @@ export function runCalculation(params: {
     baseMonthlyInput,
     legalRefMonthlyInput,
     extraRefMonthlyInput,
+    locale,
   } = params;
 
   const refMonthly = annualGross / Math.max(refMonths, 1);
@@ -363,7 +390,8 @@ export function runCalculation(params: {
     illFracFirst,
     illFracAfter,
     iclFracFirst,
-    iclFracAfter
+    iclFracAfter,
+    locale
   );
 
   const multiplier = extraMultiplier !== null ? extraMultiplier : getMultiplierBySeniority(totalYears);
@@ -372,7 +400,8 @@ export function runCalculation(params: {
     extraRefMonthly,
     totalYears,
     extraMinMonths,
-    extraMultiplier
+    extraMultiplier,
+    locale
   );
 
   const legalExtraSum = legal.amount + extraRaw.amount;
@@ -395,7 +424,8 @@ export function runCalculation(params: {
     leaveMutuelleRate,
     leaveRetraiteTARate,
     leaveRetraiteTBRate,
-    leaveCETRate
+    leaveCETRate,
+    locale
   );
 
   const totalBrut = legalExtraAdjusted + reclass.amount + trainingBonus + businessCreationBonus;

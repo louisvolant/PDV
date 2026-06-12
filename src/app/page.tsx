@@ -13,7 +13,7 @@ import CalculatorForm from './components/CalculatorForm';
 import CalculatorResults from './components/CalculatorResults';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Input states - Données de base
   const [annualGross, setAnnualGross] = useState<number>(48000);
@@ -263,6 +263,7 @@ export default function Home() {
       baseMonthlyInput,
       legalRefMonthlyInput,
       extraRefMonthlyInput,
+      locale: language,
     });
   }, [
     annualGross,

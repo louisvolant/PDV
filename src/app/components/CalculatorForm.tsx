@@ -225,6 +225,48 @@ export default function CalculatorForm({
                   className={inputClass}
                 />
               </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                    {t('seniority_years')}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={seniorityYears}
+                    onChange={(e) => setSeniorityYears(Math.max(0, Number(e.target.value)))}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                    {t('seniority_months')}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="11"
+                    value={seniorityMonths}
+                    onChange={(e) => setSeniorityMonths(Math.max(0, Math.min(11, Number(e.target.value))))}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                  {t('ref_months')}
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={refMonths}
+                  onChange={(e) => setRefMonths(Math.max(1, Number(e.target.value)))}
+                  className={inputClass}
+                />
+              </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                   {t('income_tax_rate')}
@@ -239,46 +281,6 @@ export default function CalculatorForm({
                   />
                   <Percent className="absolute right-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                  {t('seniority_years')}
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={seniorityYears}
-                  onChange={(e) => setSeniorityYears(Math.max(0, Number(e.target.value)))}
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                  {t('seniority_months')}
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="11"
-                  value={seniorityMonths}
-                  onChange={(e) => setSeniorityMonths(Math.max(0, Math.min(11, Number(e.target.value))))}
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                  {t('ref_months')}
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={refMonths}
-                  onChange={(e) => setRefMonths(Math.max(1, Number(e.target.value)))}
-                  className={inputClass}
-                />
               </div>
             </div>
 
