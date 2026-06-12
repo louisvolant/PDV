@@ -212,7 +212,7 @@ export default function CalculatorForm({
 
         {openSection === 'base' && (
           <div className="p-5 border-t border-slate-200 dark:border-slate-800/60 flex flex-col gap-5 animate-slide-up">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                   {t('annual_gross')}
@@ -225,36 +225,34 @@ export default function CalculatorForm({
                   className={inputClass}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                    {t('seniority_years')}
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={seniorityYears}
-                    onChange={(e) => setSeniorityYears(Math.max(0, Number(e.target.value)))}
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                    {t('seniority_months')}
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="11"
-                    value={seniorityMonths}
-                    onChange={(e) => setSeniorityMonths(Math.max(0, Math.min(11, Number(e.target.value))))}
-                    className={inputClass}
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                  {t('seniority_years')}
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={seniorityYears}
+                  onChange={(e) => setSeniorityYears(Math.max(0, Number(e.target.value)))}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                  {t('seniority_months')}
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="11"
+                  value={seniorityMonths}
+                  onChange={(e) => setSeniorityMonths(Math.max(0, Math.min(11, Number(e.target.value))))}
+                  className={inputClass}
+                />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                   {t('ref_months')}

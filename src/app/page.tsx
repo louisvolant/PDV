@@ -299,6 +299,7 @@ export default function Home() {
     baseMonthlyInput,
     legalRefMonthlyInput,
     extraRefMonthlyInput,
+    language,
   ]);
 
   // Reset Handler
