@@ -12,58 +12,75 @@ import {
 import CalculatorForm from './components/CalculatorForm';
 import CalculatorResults from './components/CalculatorResults';
 
+// Helper function to read persisted state from localStorage safely
+const getInitialValue = <T,>(key: string, defaultValue: T): T => {
+  if (typeof window === 'undefined') return defaultValue;
+  try {
+    const saved = localStorage.getItem('pdv_calculator_inputs');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data[key] !== undefined) {
+        return data[key] as T;
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load initial input from localStorage', e);
+  }
+  return defaultValue;
+};
+
 export default function Home() {
   const { t, language } = useLanguage();
 
-  // Input states - Données de base
-  const [annualGross, setAnnualGross] = useState<number>(48000);
-  const [seniorityYears, setSeniorityYears] = useState<number>(8);
-  const [seniorityMonths, setSeniorityMonths] = useState<number>(0);
-  const [refMonths, setRefMonths] = useState<number>(12);
-  const [incomeTaxRate, setIncomeTaxRate] = useState<number>(14.5);
+  // Basic input states
+  const [annualGross, setAnnualGross] = useState<number>(() => getInitialValue('annualGross', 48000));
+  const [seniorityYears, setSeniorityYears] = useState<number>(() => getInitialValue('seniorityYears', 8));
+  const [seniorityMonths, setSeniorityMonths] = useState<number>(() => getInitialValue('seniorityMonths', 0));
+  const [refMonths, setRefMonths] = useState<number>(() => getInitialValue('refMonths', 12));
+  const [incomeTaxRate, setIncomeTaxRate] = useState<number>(() => getInitialValue('incomeTaxRate', 14.5));
   
   // Reference salary overrides
-  const [baseMonthlyInput, setBaseMonthlyInput] = useState<number>(0);
-  const [legalRefMonthlyInput, setLegalRefMonthlyInput] = useState<number>(0);
-  const [extraRefMonthlyInput, setExtraRefMonthlyInput] = useState<number>(0);
+  const [baseMonthlyInput, setBaseMonthlyInput] = useState<number>(() => getInitialValue('baseMonthlyInput', 0));
+  const [legalRefMonthlyInput, setLegalRefMonthlyInput] = useState<number>(() => getInitialValue('legalRefMonthlyInput', 0));
+  const [extraRefMonthlyInput, setExtraRefMonthlyInput] = useState<number>(() => getInitialValue('extraRefMonthlyInput', 0));
 
-  // Reclassement & Congé
-  const [reclassPreavisMonths, setReclassPreavisMonths] = useState<number>(3);
-  const [reclassPreavisRate, setReclassPreavisRate] = useState<number>(100);
-  const [reclassPreavisUsed, setReclassPreavisUsed] = useState<number>(0);
-  const [reclassLeaveMonths, setReclassLeaveMonths] = useState<number>(9);
-  const [reclassLeaveRate, setReclassLeaveRate] = useState<number>(80);
-  const [reclassLeaveUsed, setReclassLeaveUsed] = useState<number>(0);
-  const [reclassReducedRate, setReclassReducedRate] = useState<number>(80);
+  // Reclassification & Leave
+  const [reclassPreavisMonths, setReclassPreavisMonths] = useState<number>(() => getInitialValue('reclassPreavisMonths', 3));
+  const [reclassPreavisRate, setReclassPreavisRate] = useState<number>(() => getInitialValue('reclassPreavisRate', 100));
+  const [reclassPreavisUsed, setReclassPreavisUsed] = useState<number>(() => getInitialValue('reclassPreavisUsed', 0));
+  const [reclassLeaveMonths, setReclassLeaveMonths] = useState<number>(() => getInitialValue('reclassLeaveMonths', 9));
+  const [reclassLeaveRate, setReclassLeaveRate] = useState<number>(() => getInitialValue('reclassLeaveRate', 80));
+  const [reclassLeaveUsed, setReclassLeaveUsed] = useState<number>(() => getInitialValue('reclassLeaveUsed', 0));
+  const [reclassReducedRate, setReclassReducedRate] = useState<number>(() => getInitialValue('reclassReducedRate', 80));
 
   // Social Charges
-  const [leaveCSGCRDSRate, setLeaveCSGCRDSRate] = useState<number>(6.7);
-  const [leavePrevoyanceRate, setLeavePrevoyanceRate] = useState<number>(0.8);
-  const [leaveMutuelleRate, setLeaveMutuelleRate] = useState<number>(0);
-  const [leaveRetraiteTARate, setLeaveRetraiteTARate] = useState<number>(4.9);
-  const [leaveRetraiteTBRate, setLeaveRetraiteTBRate] = useState<number>(9.7);
-  const [leaveCETRate, setLeaveCETRate] = useState<number>(0.1);
+  const [leaveCSGCRDSRate, setLeaveCSGCRDSRate] = useState<number>(() => getInitialValue('leaveCSGCRDSRate', 6.7));
+  const [leavePrevoyanceRate, setLeavePrevoyanceRate] = useState<number>(() => getInitialValue('leavePrevoyanceRate', 0.8));
+  const [leaveMutuelleRate, setLeaveMutuelleRate] = useState<number>(() => getInitialValue('leaveMutuelleRate', 0));
+  const [leaveRetraiteTARate, setLeaveRetraiteTARate] = useState<number>(() => getInitialValue('leaveRetraiteTARate', 4.9));
+  const [leaveRetraiteTBRate, setLeaveRetraiteTBRate] = useState<number>(() => getInitialValue('leaveRetraiteTBRate', 9.7));
+  const [leaveCETRate, setLeaveCETRate] = useState<number>(() => getInitialValue('leaveCETRate', 0.1));
 
   // Extra legal parameters
-  const [isManualMultiplier, setIsManualMultiplier] = useState<boolean>(false);
-  const [extraMultiplier, setExtraMultiplier] = useState<number>(1.0);
-  const [extraMinMonths, setExtraMinMonths] = useState<number>(0);
+  const [isManualMultiplier, setIsManualMultiplier] = useState<boolean>(() => getInitialValue('isManualMultiplier', false));
+  const [extraMultiplier, setExtraMultiplier] = useState<number>(() => getInitialValue('extraMultiplier', 1.0));
+  const [extraMinMonths, setExtraMinMonths] = useState<number>(() => getInitialValue('extraMinMonths', 0));
   
-  const [isManualFloor, setIsManualFloor] = useState<boolean>(false);
-  const [legalExtraFloor, setLegalExtraFloor] = useState<number>(90000);
-  const [legalExtraCeiling, setLegalExtraCeiling] = useState<number>(300000);
+  const [isManualFloor, setIsManualFloor] = useState<boolean>(() => getInitialValue('isManualFloor', false));
+  const [legalExtraFloor, setLegalExtraFloor] = useState<number>(() => getInitialValue('legalExtraFloor', 90000));
+  const [legalExtraCeiling, setLegalExtraCeiling] = useState<number>(() => getInitialValue('legalExtraCeiling', 300000));
 
   // Legal fractions
-  const [illFracFirst, setIllFracFirst] = useState<number>(0.25);
-  const [illFracAfter, setIllFracAfter] = useState<number>(0.33);
-  const [iclFracFirst, setIclFracFirst] = useState<number>(0.25);
-  const [iclFracAfter, setIclFracAfter] = useState<number>(0.33);
+  const [illFracFirst, setIllFracFirst] = useState<number>(() => getInitialValue('illFracFirst', 0.25));
+  const [illFracAfter, setIllFracAfter] = useState<number>(() => getInitialValue('illFracAfter', 0.33));
+  const [iclFracFirst, setIclFracFirst] = useState<number>(() => getInitialValue('iclFracFirst', 0.25));
+  const [iclFracAfter, setIclFracAfter] = useState<number>(() => getInitialValue('iclFracAfter', 0.33));
 
-  // Primes
-  const [trainingBonusEnabled, setTrainingBonusEnabled] = useState<boolean>(false);
-  const [trainingBonus, setTrainingBonus] = useState<number>(10000);
-  const [businessCreationBonusEnabled, setBusinessCreationBonusEnabled] = useState<boolean>(false);
-  const [businessCreationBonus, setBusinessCreationBonus] = useState<number>(20000);
+  // Bonuses
+  const [trainingBonusEnabled, setTrainingBonusEnabled] = useState<boolean>(() => getInitialValue('trainingBonusEnabled', false));
+  const [trainingBonus, setTrainingBonus] = useState<number>(() => getInitialValue('trainingBonus', 10000));
+  const [businessCreationBonusEnabled, setBusinessCreationBonusEnabled] = useState<boolean>(() => getInitialValue('businessCreationBonusEnabled', false));
+  const [businessCreationBonus, setBusinessCreationBonus] = useState<number>(() => getInitialValue('businessCreationBonus', 20000));
 
   // Derived Seniority / Calculations
   const totalYears = useMemo(() => {
@@ -78,65 +95,14 @@ export default function Home() {
     return getMultiplierBySeniority(totalYears);
   }, [totalYears]);
 
-  // Sync automatic suggested values if user has not edited them
-  useEffect(() => {
-    if (!isManualFloor) {
-      setLegalExtraFloor(autoFloor);
-    }
-  }, [autoFloor, isManualFloor]);
+  // Adjust automatic suggested values during render if user has not edited them
+  if (!isManualFloor && legalExtraFloor !== autoFloor) {
+    setLegalExtraFloor(autoFloor);
+  }
 
-  useEffect(() => {
-    if (!isManualMultiplier) {
-      setExtraMultiplier(autoMultiplier);
-    }
-  }, [autoMultiplier, isManualMultiplier]);
-
-  // Load states from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('pdv_calculator_inputs');
-      if (saved) {
-        const data = JSON.parse(saved);
-        if (data.annualGross !== undefined) setAnnualGross(data.annualGross);
-        if (data.incomeTaxRate !== undefined) setIncomeTaxRate(data.incomeTaxRate);
-        if (data.seniorityYears !== undefined) setSeniorityYears(data.seniorityYears);
-        if (data.seniorityMonths !== undefined) setSeniorityMonths(data.seniorityMonths);
-        if (data.refMonths !== undefined) setRefMonths(data.refMonths);
-        if (data.baseMonthlyInput !== undefined) setBaseMonthlyInput(data.baseMonthlyInput);
-        if (data.legalRefMonthlyInput !== undefined) setLegalRefMonthlyInput(data.legalRefMonthlyInput);
-        if (data.extraRefMonthlyInput !== undefined) setExtraRefMonthlyInput(data.extraRefMonthlyInput);
-        if (data.reclassPreavisMonths !== undefined) setReclassPreavisMonths(data.reclassPreavisMonths);
-        if (data.reclassPreavisRate !== undefined) setReclassPreavisRate(data.reclassPreavisRate);
-        if (data.reclassPreavisUsed !== undefined) setReclassPreavisUsed(data.reclassPreavisUsed);
-        if (data.reclassLeaveMonths !== undefined) setReclassLeaveMonths(data.reclassLeaveMonths);
-        if (data.reclassLeaveRate !== undefined) setReclassLeaveRate(data.reclassLeaveRate);
-        if (data.reclassLeaveUsed !== undefined) setReclassLeaveUsed(data.reclassLeaveUsed);
-        if (data.reclassReducedRate !== undefined) setReclassReducedRate(data.reclassReducedRate);
-        if (data.leaveCSGCRDSRate !== undefined) setLeaveCSGCRDSRate(data.leaveCSGCRDSRate);
-        if (data.leavePrevoyanceRate !== undefined) setLeavePrevoyanceRate(data.leavePrevoyanceRate);
-        if (data.leaveMutuelleRate !== undefined) setLeaveMutuelleRate(data.leaveMutuelleRate);
-        if (data.leaveRetraiteTARate !== undefined) setLeaveRetraiteTARate(data.leaveRetraiteTARate);
-        if (data.leaveRetraiteTBRate !== undefined) setLeaveRetraiteTBRate(data.leaveRetraiteTBRate);
-        if (data.leaveCETRate !== undefined) setLeaveCETRate(data.leaveCETRate);
-        if (data.isManualMultiplier !== undefined) setIsManualMultiplier(data.isManualMultiplier);
-        if (data.extraMultiplier !== undefined) setExtraMultiplier(data.extraMultiplier);
-        if (data.extraMinMonths !== undefined) setExtraMinMonths(data.extraMinMonths);
-        if (data.isManualFloor !== undefined) setIsManualFloor(data.isManualFloor);
-        if (data.legalExtraFloor !== undefined) setLegalExtraFloor(data.legalExtraFloor);
-        if (data.legalExtraCeiling !== undefined) setLegalExtraCeiling(data.legalExtraCeiling);
-        if (data.illFracFirst !== undefined) setIllFracFirst(data.illFracFirst);
-        if (data.illFracAfter !== undefined) setIllFracAfter(data.illFracAfter);
-        if (data.iclFracFirst !== undefined) setIclFracFirst(data.iclFracFirst);
-        if (data.iclFracAfter !== undefined) setIclFracAfter(data.iclFracAfter);
-        if (data.trainingBonusEnabled !== undefined) setTrainingBonusEnabled(data.trainingBonusEnabled);
-        if (data.trainingBonus !== undefined) setTrainingBonus(data.trainingBonus);
-        if (data.businessCreationBonusEnabled !== undefined) setBusinessCreationBonusEnabled(data.businessCreationBonusEnabled);
-        if (data.businessCreationBonus !== undefined) setBusinessCreationBonus(data.businessCreationBonus);
-      }
-    } catch (e) {
-      console.error('Failed to load inputs from localStorage', e);
-    }
-  }, []);
+  if (!isManualMultiplier && extraMultiplier !== autoMultiplier) {
+    setExtraMultiplier(autoMultiplier);
+  }
 
   // Save states to localStorage on state changes
   useEffect(() => {

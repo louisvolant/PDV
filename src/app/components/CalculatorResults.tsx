@@ -4,7 +4,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { CalculationResult } from '@/lib/calculations';
-import { HelpCircle } from 'lucide-react';
 
 interface CalculatorResultsProps {
   results: CalculationResult | null;

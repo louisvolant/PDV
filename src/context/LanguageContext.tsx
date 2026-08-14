@@ -1,10 +1,11 @@
 // src/context/LanguageContext.tsx
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Language = 'fr' | 'en';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dictionary = { [key: string]: string | ((...args: any[]) => string) };
 
 const fr: Dictionary = {
@@ -280,31 +281,33 @@ const en: Dictionary = {
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   t: (key: string, ...args: any[]) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('fr');
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang === 'fr' || savedLang === 'en') {
-      setLanguageState(savedLang);
-    } else {
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('language') as Language;
+      if (savedLang === 'fr' || savedLang === 'en') {
+        return savedLang;
+      }
       const browserLang = navigator.language.slice(0, 2);
       if (browserLang === 'en') {
-        setLanguageState('en');
+        return 'en';
       }
     }
-  }, []);
+    return 'fr';
+  });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('language', lang);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const t = (key: string, ...args: any[]): string => {
     const dict = language === 'fr' ? fr : en;
     const translation = dict[key];

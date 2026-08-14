@@ -39,8 +39,8 @@ interface CalculatorFormProps {
   setIsManualMultiplier: (val: boolean) => void;
   extraMultiplier: number;
   setExtraMultiplier: (val: number) => void;
-  extraMinMonths: number;
-  setExtraMinMonths: (val: number) => void;
+  extraMinMonths?: number;
+  setExtraMinMonths?: (val: number) => void;
   isManualFloor: boolean;
   setIsManualFloor: (val: boolean) => void;
   legalExtraFloor: number;
@@ -125,8 +125,6 @@ export default function CalculatorForm({
   setIsManualMultiplier,
   extraMultiplier,
   setExtraMultiplier,
-  extraMinMonths,
-  setExtraMinMonths,
   isManualFloor,
   setIsManualFloor,
   legalExtraFloor,
