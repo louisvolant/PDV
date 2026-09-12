@@ -93,24 +93,22 @@ npm run pages:deploy
 
 ---
 
-## 🔐 Environment Variables & `keep_vars = true`
+## 🔐 Environment Variables & `keep_vars`
 
-When deploying to Cloudflare Workers / Pages using Wrangler, the default behavior can overwrite or delete existing environment variables configured via the Cloudflare dashboard.
+- **Git-based Deployments (Cloudflare Pages)**: Environment variables are managed natively via the Cloudflare Dashboard under **Settings > Environment variables**. Cloudflare Pages Git deployments preserve all dashboard-configured variables and secrets across builds. Cloudflare Pages configuration validation does not allow `keep_vars` inside `wrangler.toml` for Pages projects, as variables are non-destructive in Pages Git integration.
+- **CLI / Manual Deployments**: When using the Wrangler CLI for direct uploads, the `--keep-vars` flag is included in the deployment script to ensure remote dashboard variables are never overwritten:
 
-To protect against accidental loss of dashboard-configured variables and secrets, this project includes `keep_vars = true` in [wrangler.toml](file:///Users/louis/javascriptworkspace/pdv-calculator/wrangler.toml):
+```bash
+wrangler pages deploy out --project-name=pdv-calculator --keep-vars
+```
 
 ```toml
 name = "pdv-calculator"
 compatibility_date = "2024-09-01"
 pages_build_output_dir = "out"
 
-# Preserve environment variables and secrets configured in the Cloudflare dashboard
-keep_vars = true
-```
-
-And the deployment script enforces the flag:
-```bash
-wrangler pages deploy out --project-name=pdv-calculator --keep-vars
+[vars]
+# Add shared non-sensitive environment variables here if needed
 ```
 
 > **Note**: For client-side variables in Next.js, make sure to prefix them with `NEXT_PUBLIC_` so they are embedded during build time.
