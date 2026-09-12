@@ -1,6 +1,6 @@
 # PDV – Voluntary Departure Plan Severance Calculator
 
-An interactive, modular, and beautifully designed frontend application built to estimate severance packages under the French Voluntary Departure Plan (**Plan de Départ Volontaire - PDV**). 
+An interactive, modular, and beautifully designed frontend application built to estimate severance packages under the French Voluntary Departure Plan (**Plan de Départ Volontaire - PDV**).
 
 ---
 
@@ -25,17 +25,18 @@ It has been styled following modern frontend conventions, matching clean aesthet
 
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Static HTML Export)
 - **Library**: [React 19](https://react.dev/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (with CSS variable theme-mapping & custom keyframes)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Hosting**: [Cloudflare Pages](https://pages.cloudflare.com/)
 
 ---
 
-## 🛠️ Installation & Setup
+## 🛠️ Installation & Local Development
 
-Ensure you have [Node.js](https://nodejs.org/) installed, then follow these steps:
+Ensure you have [Node.js](https://nodejs.org/) (v20+ recommended) installed, then follow these steps:
 
 ### 1. Install Dependencies
 ```bash
@@ -46,19 +47,80 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 3. Build for Production
-To build and check compilation:
+Compiles the static export into the `out/` directory:
 ```bash
 npm run build
 ```
 
+### 4. Local Cloudflare Pages Preview
+Preview the static build using Wrangler:
+```bash
+npm run pages:preview
+```
+
 ---
 
-## 💻 Code Quality
+## ☁️ Deployment on Cloudflare Pages
 
-This project is configured with TypeScript checks and ESLint linting:
+This project is configured for **Static HTML Export** (`output: 'export'`), which provides maximum performance, instant global CDN delivery, zero cold starts, and full reliability on Cloudflare Pages.
+
+### Option A: Continuous Deployment via GitHub (Recommended)
+
+1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2. Navigate to **Workers & Pages** > **Create application** > **Pages** > **Connect to Git**.
+3. Select your repository (`louisvolant/PDV`) and choose the `master` branch.
+4. Configure the build settings:
+   - **Framework preset**: `None` or `Next.js (Static Export)`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `out`
+   - **Root directory**: `/` (default)
+5. Set Environment Variables under **Environment variables (advanced)**:
+   - Variable name: `NODE_VERSION`
+   - Value: `20` (or `22`)
+6. Click **Save and Deploy**. Cloudflare Pages will build and deploy the app on every push to `master`.
+
+---
+
+### Option B: Manual / CLI Deployment with Wrangler
+
+You can also deploy directly from your local terminal or via CI/CD pipelines:
+```bash
+npm run pages:deploy
+```
+
+---
+
+## 🔐 Environment Variables & `keep_vars = true`
+
+When deploying to Cloudflare Workers / Pages using Wrangler, the default behavior can overwrite or delete existing environment variables configured via the Cloudflare dashboard.
+
+To protect against accidental loss of dashboard-configured variables and secrets, this project includes `keep_vars = true` in [wrangler.toml](file:///Users/louis/javascriptworkspace/pdv-calculator/wrangler.toml):
+
+```toml
+name = "pdv-calculator"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "out"
+
+# Preserve environment variables and secrets configured in the Cloudflare dashboard
+keep_vars = true
+```
+
+And the deployment script enforces the flag:
+```bash
+wrangler pages deploy out --project-name=pdv-calculator --keep-vars
+```
+
+> **Note**: For client-side variables in Next.js, make sure to prefix them with `NEXT_PUBLIC_` so they are embedded during build time.
+
+---
+
+## 💻 Code Quality & Testing
+
+This project is configured with TypeScript checks and ESLint:
+
 ```bash
 # Run linting
 npm run lint
