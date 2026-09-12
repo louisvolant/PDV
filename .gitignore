@@ -29,12 +29,16 @@ yarn-error.log*
 .env
 
 # vercel
- .vercel
- 
-+# IDE
-+.idea/
-+
- # typescript
+.vercel
+
+# IDE
+.idea/
+.vscode/
+
+# cloudflare / wrangler
+.wrangler/
+
+# typescript
 *.tsbuildinfo
 next-env.d.ts
 
